@@ -48,11 +48,15 @@ In `lldb` we can dump the information with these commands:
 
 1. Download this git repostory to your home directory as `.lldb`.
 
-    git clone https://github.com/dryman/lldb-block-helper.git ~/.lldb
+~~~~
+git clone https://github.com/dryman/lldb-block-helper.git ~/.lldb
+~~~~
 
 2. add this line into your `~/.lldbinit`.
 
-    command script import ~/.lldb/blockHelper.py 
+~~~~
+command script import ~/.lldb/blockHelper.py 
+~~~~
 
 ## REFERENCES
 

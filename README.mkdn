@@ -1,0 +1,63 @@
+# LLDB Block helper
+
+This is a simple helper to dump C/Obj-C block runtime information. 
+
+## USAGE
+
+Say we have a simple block like this:
+
+    typedef void (^BoringBlock)(void);
+    BoringBlock boringBlock;
+
+    void boringFunction (void)
+    {
+        __block int x = 1;
+
+        BoringBlock localBlock = ^{
+            x++; // Dummy use of x
+        };  
+        boringBlock = Block_copy(localBlock);
+    }
+
+In `lldb` we can dump the information with these commands:
+
+    (lldb) pbyref x
+    <no result>
+    byref data block 0x100713f90 contents:
+      forwarding: 0x100713f90
+      flags: 0x1000004
+      size: 32
+
+    (lldb) pblock localBlock
+    <no result>
+    ^0x7fff5fbff480 (new layout) =
+    isa: stack Block
+    flags: HASSIGNATURE HASHELP
+    refcount+deallocating: 0
+    invoke: 0x100001430
+    descriptor: 0x100002070
+    descriptor->reserved: 0
+    descriptor->size: 40
+    descriptor->copy helper: 0x100001470
+    descriptor->dispose helper: 0x1000014b0
+    descriptor->signature: 0x100001c29 'v8@?0'
+    descriptor->layout: 0x0 '(null)'
+
+
+## INSTALL
+
+1. Download this git repostory to your home directory as `.lldb`.
+
+    git clone https://github.com/dryman/lldb-block-helper.git ~/.lldb
+
+2. add this line into your `~/.lldbinit`.
+
+    command script import ~/.lldb/blockHelper.py 
+
+## REFERENCES
+
+* [lldb python references][python]
+* [block byref internals][blog]
+
+[python]: http://lldb.llvm.org/python-reference.html
+[blog]: http://www.idryman.org/blog/2012/09/29/c-objc-block-byref-internals/
